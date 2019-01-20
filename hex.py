@@ -1,9 +1,9 @@
 class Hex:
 
     def __init__(self, row, col):
-        self.data = row + col
-        self.col = col
+        self.data = 0
         self.row = row
+        self.col = col
 
     def set_data(self, data):
         self.data = data
@@ -16,7 +16,7 @@ class Hex:
             return None
 
         if self.row % 2 == 0:
-            return self.col - 1, self.row - 1
+            return self.row - 1, self.col - 1
         else:
             return self.row - 1, self.col
 
@@ -53,5 +53,8 @@ class Hex:
         else:
             return self.row + 1, self.col + 1
 
+    def coords(self):
+        return "(" + str(self.row) + ", " + str(self.col) + ")"
+
     def __str__(self):
-        return "(" + str(self.row) + ", " + str(self.col) + ") " + str(self.data)
+        return str(self.data)
