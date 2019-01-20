@@ -57,7 +57,7 @@ def calculate(letters :str, current :(), grid: [], steps :[]) -> (bool, [], []):
 
         exists = False
 
-        # Check to make sure it's none
+        # Check to make sure there is a space around 
         for surr in surroundings:
             if surr is not None:
                 exists = True
