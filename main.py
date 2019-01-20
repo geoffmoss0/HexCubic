@@ -48,9 +48,15 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
 
     letter = letters[0]
 
-    up_right = grid[grid[current[0]][current[1]].up_right()[0]][grid[current[0]][current[1]].up_right()[1]]
-    right = grid[grid[current[0]][current[1]].right()[0]][grid[current[0]][current[1]].right()[1]]
-    down_right = grid[grid[current[0]][current[1]].down_right()[0]][grid[current[0]][current[1]].down_right()[1]]
+    ur = grid[current[0]][current[1]].up_right()
+    if ur is not None:
+        up_right = grid[ur[0]][ur[1]]
+    r = grid[current[0]][current[1]].right()
+    if r is not None:
+        right = grid[r[0]][r[1]]
+    dr = grid[current[0]][current[1]].down_right()
+    if dr is not None:
+        down_right = grid[dr[0]][dr[1]]
     down_left = grid[grid[current[0]][current[1]].down_left()[0]][grid[current[0]][current[1]].down_left()[1]]
     left = grid[grid[current[0]][current[1]].left()[0]][grid[current[0]][current[1]].left()[1]]
     up_left = grid[grid[current[0]][current[1]].up_left()[0]][grid[current[0]][current[1]].up_left()[1]]
