@@ -19,15 +19,26 @@ def graph(data: str) -> ([], []):  # Hey look, the return type is my reaction to
             count += 1
 
     size = (4 * count) - 1
-    print(size)
+    print("size: " + str(size))
 
     grid = [[Hex(x, y) for x in range(size)] for y in range(size)]
     steps = []
 
-    current = (count - 1, count - 1)
-    print(grid)
+    current = (size // 2, size // 2)
+    print("current: " + str(current))
+    for col in range(len(grid)):
+        if col % 2 == 0:
+            out = ""
+            for row in range(len(grid)):
+                out = out + str(grid[col][row]) + " "
+            print(out)
+        else:
+            out = " "
+            for row in range(len(grid)):
+                out = out + str(grid[col][row]) + " "
+            print(out)
 
-    succ, grid, steps = calculate(data, current, grid, steps)
+    succ, steps = calculate(data, current, grid, steps)
 
     draw(grid)
 
@@ -43,27 +54,38 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
     """
 
     if letters == "":
-        steps.add("*")
+        steps.append("*")
         return True, steps
 
     letter = letters[0]
 
     ur = grid[current[0]][current[1]].up_right()
     if ur is not None:
-        up_right = grid[ur[0]][ur[1]]
+        ur = grid[ur[0]][ur[1]]
     r = grid[current[0]][current[1]].right()
     if r is not None:
-        right = grid[r[0]][r[1]]
+        r = grid[r[0]][r[1]]
     dr = grid[current[0]][current[1]].down_right()
     if dr is not None:
-        down_right = grid[dr[0]][dr[1]]
-    down_left = grid[grid[current[0]][current[1]].down_left()[0]][grid[current[0]][current[1]].down_left()[1]]
-    left = grid[grid[current[0]][current[1]].left()[0]][grid[current[0]][current[1]].left()[1]]
-    up_left = grid[grid[current[0]][current[1]].up_left()[0]][grid[current[0]][current[1]].up_left()[1]]
+        dr = grid[dr[0]][dr[1]]
+    dl = grid[current[0]][current[1]].down_left()
+    if dl is not None:
+        dl = grid[dl[0]][dl[1]]
+    l = grid[current[0]][current[1]].left()
+    if l is not None:
+        l = grid[l[0]][l[1]]
+    ul = grid[current[0]][current[1]].up_left()
+    if ul is not None:
+        ul = grid[ul[0]][ul[1]]
 
-    surroundings = (up_right, right, down_right, down_left, left, up_left)
+    surroundings = (ur, r, dr, dl, l, ul)
+    for sur in range(len(surroundings)):
+        print(surroundings[sur])
 
     if letter == "a" or letter == "b" or letter == "m" or letter == "n" or letter == "y" or letter == "z":
+
+        if len(steps) == 0:
+            grid[current[0]][current[1]]
 
         succ = False
         exists = False
@@ -75,31 +97,45 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
             if surroundings[i] is not None and i is not 4:
                 exists = True
 
+        print("exists: " + str(exists))
         if exists:
             for surr in surroundings:
-                if surr is not None and surr.data == 0 and grid[surr.up_right().col][surr.up_right().row].data == 0: # Check that both the region we want and the one up and to the right are free
+                print("surr: " + str(surr))
+                if surr is not None and surr.data == 0 and grid[surr.up_right()[0]][surr.up_right()[1]].data == 0: # Check that both the region we want and the one up and to the right are free
                     # TODO change the grid region
 
                     # TODO lots of if's here
                     # grid[surr.col][surr.row] =
                     if letter == "a":
                         surr.data = 1
-                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 1
                     if letter == "b":
                         surr.data = 1
-                        grid[surr.up_right().col][surr.up_right().row].data = 2
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
                     if letter == "m":
                         surr.data = 2
-                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 1
                     if letter == "n":
                         surr.data = 2
-                        grid[surr.up_right().col][surr.up_right().row].data = 2
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
                     if letter == "y":
                         surr.data = 3
-                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 1
                     if letter == "z":
                         surr.data = 3
-                        grid[surr.up_right().col][surr.up_right().row].data = 2
+                        grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
+
+                    for col in range(len(grid)):
+                        if col % 2 == 0:
+                            out = ""
+                            for row in range(len(grid)):
+                                out = out + str(grid[col][row]) + " "
+                            print(out)
+                        else:
+                            out = " "
+                            for row in range(len(grid)):
+                                out = out + str(grid[col][row]) + " "
+                            print(out)
 
                     succ, new_steps = calculate(letters[1:], (surr.col, surr.row), grid, steps)
 
