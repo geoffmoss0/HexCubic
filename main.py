@@ -3,8 +3,6 @@ from hex import Hex
 
 
 def main():
-    turtle.forward(375)
-    turtle.mainloop()
 
     while True:
         data = input()
@@ -20,20 +18,21 @@ def graph(data: str) -> ([], []):  # Hey look, the return type is my reaction to
         if not letter == " ":
             count += 1
 
-    size = (2 * count) - 1
+    size = (4 * count) - 1
+    print(size)
 
     grid = [[Hex(x, y) for x in range(size)] for y in range(size)]
     steps = []
 
     current = (count - 1, count - 1)
+    print(grid)
 
     succ, grid, steps = calculate(data, current, grid, steps)
 
     draw(grid)
 
 
-
-def calculate(letters :str, current :(), grid: [], steps :[]) -> (bool, [], []):
+def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
     """
 
     :param letters: the letters left to calculate
@@ -45,34 +44,73 @@ def calculate(letters :str, current :(), grid: [], steps :[]) -> (bool, [], []):
 
     if letters == "":
         steps.add("*")
-        return True, grid, steps
+        return True, steps
 
     letter = letters[0]
 
+    up_right = grid[grid[current[0]][current[1]].up_right()[0]][grid[current[0]][current[1]].up_right()[1]]
+    right = grid[grid[current[0]][current[1]].right()[0]][grid[current[0]][current[1]].right()[1]]
+    down_right = grid[grid[current[0]][current[1]].down_right()[0]][grid[current[0]][current[1]].down_right()[1]]
+    down_left = grid[grid[current[0]][current[1]].down_left()[0]][grid[current[0]][current[1]].down_left()[1]]
+    left = grid[grid[current[0]][current[1]].left()[0]][grid[current[0]][current[1]].left()[1]]
+    up_left = grid[grid[current[0]][current[1]].up_left()[0]][grid[current[0]][current[1]].up_left()[1]]
+
+    surroundings = (up_right, right, down_right, down_left, left, up_left)
 
     if letter == "a" or letter == "b" or letter == "m" or letter == "n" or letter == "y" or letter == "z":
-        surroundings = (grid[current[0]][current[1]].up_right(), grid[current[0]][current[1]].right(),
-                        grid[current[0]][current[1]].down_right(), grid[current[0]][current[1]].down_left(),
-                        grid[current[0]][current[1]].left(), grid[current[0]][current[1]].up_left())
 
+        succ = False
         exists = False
 
-        # Check to make sure there is a space around 
-        for surr in surroundings:
-            if surr is not None:
+        # Check to make sure there is a space around it
+        # Also, because these will all go up and to the right, the space down and to the left won't work in any case
+
+        for i in range(6):
+            if surroundings[i] is not None and i is not 4:
                 exists = True
 
         if exists:
             for surr in surroundings:
-                if surr.data == 0:
+                if surr is not None and surr.data == 0 and grid[surr.up_right().col][surr.up_right().row].data == 0: # Check that both the region we want and the one up and to the right are free
                     # TODO change the grid region
 
                     # TODO lots of if's here
                     # grid[surr.col][surr.row] =
-                    succ, grid, steps = calculate(letters[1:], (surr.col, surr.row), grid, steps) # TODO actually add the step to the array once I figure out the format. It'll stay blank for now
+                    if letter == "a":
+                        surr.data = 1
+                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                    if letter == "b":
+                        surr.data = 1
+                        grid[surr.up_right().col][surr.up_right().row].data = 2
+                    if letter == "m":
+                        surr.data = 2
+                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                    if letter == "n":
+                        surr.data = 2
+                        grid[surr.up_right().col][surr.up_right().row].data = 2
+                    if letter == "y":
+                        surr.data = 3
+                        grid[surr.up_right().col][surr.up_right().row].data = 1
+                    if letter == "z":
+                        surr.data = 3
+                        grid[surr.up_right().col][surr.up_right().row].data = 2
+
+                    succ, new_steps = calculate(letters[1:], (surr.col, surr.row), grid, steps)
+
+                    # handle the output of calculate
+                    if succ:
+                        # TODO add to new_steps
+
+                        return True, new_steps
+                    else:
+                        # reset the parts of the grid we changed
+                        surr.data = 0
+                        grid[surr.up_right().col][surr.up_right().row].data = 0
+            # If succ is still false, then none of the surroundings were valid
+            if not succ:
+                return False, steps
         else:
-            # TODO reset the grid region I changed
-            return False, grid, steps
+            return False, steps
 
     if letter == "c" or letter == "d" or letter == "o" or letter == "p" or letter == "0" or letter == "1":
         surroundings = (grid[current[0]][current[1]].up_right(), grid[current[0]][current[1]].right(),
@@ -100,7 +138,7 @@ def calculate(letters :str, current :(), grid: [], steps :[]) -> (bool, [], []):
                         grid[current[0]][current[1]].left(), grid[current[0]][current[1]].up_left())
 
 
-def draw(grid :[]):
+def draw(grid: []):
     pass
 
 
