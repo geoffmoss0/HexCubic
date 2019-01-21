@@ -6,12 +6,10 @@ def main():
 
     while True:
         data = input()
-        result = graph(data)
-        if result is not None:
-            draw()
+        graph(data)
 
 
-def graph(data: str) -> ([], []):  # Hey look, the return type is my reaction to the return type
+def graph(data: str):
 
     count = 0
     for letter in data:
@@ -25,7 +23,6 @@ def graph(data: str) -> ([], []):  # Hey look, the return type is my reaction to
     steps = []
 
     current = (size // 2, size // 2)
-    print("current: " + str(current))
 
     succ, steps = calculate(data, current, grid, steps)
     print("succ: " + str(succ) + ", steps: " + str(steps))
@@ -41,7 +38,10 @@ def graph(data: str) -> ([], []):  # Hey look, the return type is my reaction to
                 out = out + str(grid[col][row]) + " "
             print(out)
 
-    draw(grid)
+    if succ:
+        draw(grid, steps, size)
+    else:
+        print("Could not find solution")
 
 
 def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
@@ -1009,9 +1009,81 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
             else:
                 return False, steps
 
+    if letter == " ":
+        steps.append("#")
+        succ, new_steps = calculate(letters[1:], (current[0], current[1]), grid, steps)
+        if succ:
+            return True, new_steps
+        else:
+            return False, steps
 
-def draw(steps :[], size :int):
-    pass
+
+def draw(grid :[], steps :[], size :int):
+    center = size // 2
+    left = center
+    right = center
+    up = center
+    down = center
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            hex = grid[i][j]
+            if hex.data > 0:
+                if hex.row < up:
+                    up = hex.row
+                if hex.row > down:
+                    down = hex.row
+                if hex.col < left:
+                    left = hex.col
+                if hex.col > right:
+                    right = hex.col
+    print("up: " + str(up) + " down: " + str(down) + " left: " + str(left) + " right: " + str(right))
+    horiz = down - up + 2
+    vert = right - left + 2
+    if horiz > vert:
+        side_length = 600 // horiz
+    else:
+        side_length = 600 // vert
+    print("side_length: " + str(side_length))
+
+    if center - up >= down - center and center - up >= center - left and center - up >= right - center:
+        shift = 1
+    elif right - center >= center - up and right - center >= center - left and right - center >= down - center:
+        shift = 2
+    elif down - center >= center - up and down - center >= center - left and down - center >= right - center:
+        shift = 3
+    else:
+        shift = 4
+
+    print(shift)
+    turtle.up()
+    if shift == 1:
+        turtle.right(90)
+        for i in range((center - up) // 2):
+            turtle.forward(side_length)
+        turtle.left(90)
+    if shift == 2:
+        turtle.left(180)
+        for i in range((right - center) // 2):
+            turtle.forward(side_length)
+        turtle.right(180)
+    if shift == 3:
+        turtle.left(90)
+        for i in range((down - center) // 2):
+            turtle.forward()
+        turtle.right(90)
+    if shift == 4:
+        for i in range((center - up) // 2):
+            turtle.forward()
+    turtle.down()
+    turtle.left(60)
+    draw_down(side_length)
+    turtle.mainloop()
+
+
+def draw_down(len :int):
+    for i in range(6):
+        turtle.forward(len)
+        turtle.right(60)
 
 
 if __name__ == "__main__":
