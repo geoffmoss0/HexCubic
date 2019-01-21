@@ -1071,6 +1071,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
         if succ:
             return True, new_steps
         else:
+            steps.pop()
             return False, steps
 
 
@@ -1100,7 +1101,7 @@ def draw(grid: [], steps: [], size: int):
         side_length = 650 // (vert * 1.5)
 
     turtle.up()
-    turtle.speed(2)
+    turtle.speed(0)
 
     # Adjust for being too high
     turtle.right(90)
