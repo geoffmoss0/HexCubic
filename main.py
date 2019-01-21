@@ -6,7 +6,7 @@ def main():
 
     while True:
         data = input()
-        graph(data)
+        graph(data.lower())
 
 
 def graph(data: str):
@@ -17,7 +17,6 @@ def graph(data: str):
             count += 1
 
     size = (4 * count) - 1
-    print("size: " + str(size))
 
     grid = [[Hex(y, x) for x in range(size)] for y in range(size)]
     steps = []
@@ -25,19 +24,7 @@ def graph(data: str):
     current = (size // 2, size // 2)
 
     succ, steps = calculate(data, current, grid, steps)
-    print("succ: " + str(succ) + ", steps: " + str(steps))
-    for col in range(len(grid)):
-        if col % 2 == 0:
-            out = ""
-            for row in range(len(grid)):
-                out = out + str(grid[col][row]) + " "
-            print(out)
-        else:
-            out = " "
-            for row in range(len(grid)):
-                out = out + str(grid[col][row]) + " "
-            print(out)
-
+    print(steps)
     if succ:
         draw(grid, steps, size)
     else:
@@ -92,6 +79,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(0)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -104,6 +92,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(0)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -116,6 +105,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(0)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -128,6 +118,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(0)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -140,6 +131,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(0)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -152,6 +144,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(0)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -183,6 +176,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(0)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "b":
                             surr.data = 1
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
@@ -190,6 +184,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(0)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "m":
                             surr.data = 2
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 1
@@ -197,6 +192,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(0)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "n":
                             surr.data = 2
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
@@ -204,6 +200,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(0)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "y":
                             surr.data = 3
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 1
@@ -211,6 +208,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(0)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "z":
                             surr.data = 3
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 2
@@ -218,7 +216,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(0)
                             steps.append("u")
-
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.up_right()[0], surr.up_right()[1]), grid, steps)
 
@@ -229,7 +227,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.up_right()[0]][surr.up_right()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -247,6 +245,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(1)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -259,6 +258,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(1)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -271,6 +271,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(1)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -283,6 +284,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(1)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -295,6 +297,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(1)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -307,6 +310,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(1)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -338,6 +342,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(1)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "d":
                             surr.data = 1
                             grid[surr.right()[0]][surr.right()[1]].data = 2
@@ -345,6 +350,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(1)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "o":
                             surr.data = 2
                             grid[surr.right()[0]][surr.right()[1]].data = 1
@@ -352,6 +358,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(1)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "p":
                             surr.data = 2
                             grid[surr.right()[0]][surr.right()[1]].data = 2
@@ -359,6 +366,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(1)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "0":
                             surr.data = 3
                             grid[surr.right()[0]][surr.right()[1]].data = 1
@@ -366,6 +374,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(1)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "1":
                             surr.data = 3
                             grid[surr.right()[0]][surr.right()[1]].data = 2
@@ -373,6 +382,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(1)
                             steps.append("u")
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.right()[0], surr.right()[1]), grid, steps)
 
@@ -383,7 +393,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.right()[0]][surr.right()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -401,6 +411,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(2)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -413,6 +424,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(2)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -425,6 +437,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(2)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -437,6 +450,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(2)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -449,6 +463,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(2)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -461,6 +476,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(2)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -492,6 +508,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(2)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "f":
                             surr.data = 1
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 2
@@ -499,6 +516,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(2)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "q":
                             surr.data = 2
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 1
@@ -506,6 +524,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(2)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "r":
                             surr.data = 2
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 2
@@ -513,6 +532,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(2)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "2":
                             surr.data = 3
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 1
@@ -520,6 +540,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(2)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "3":
                             surr.data = 3
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 2
@@ -527,6 +548,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(2)
                             steps.append("u")
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.down_right()[0], surr.down_right()[1]), grid, steps)
 
@@ -537,7 +559,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.down_right()[0]][surr.down_right()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -555,6 +577,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(3)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -567,6 +590,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(3)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -579,6 +603,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(3)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -591,6 +616,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(3)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -603,6 +629,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(3)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -615,6 +642,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(3)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -646,6 +674,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(3)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "h":
                             surr.data = 1
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 2
@@ -653,6 +682,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(3)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "s":
                             surr.data = 2
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 1
@@ -660,6 +690,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(3)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "t":
                             surr.data = 2
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 2
@@ -667,6 +698,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(3)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "4":
                             surr.data = 3
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 1
@@ -674,6 +706,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(3)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "5":
                             surr.data = 3
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 2
@@ -681,6 +714,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(3)
                             steps.append("u")
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.down_left()[0], surr.down_left()[1]), grid, steps)
 
@@ -691,7 +725,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.down_left()[0]][surr.down_left()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -709,6 +743,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(4)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -721,6 +756,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(4)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -733,6 +769,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(4)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -745,6 +782,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(4)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -757,6 +795,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(4)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -769,6 +808,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(4)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -800,6 +840,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(4)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "j":
                             surr.data = 1
                             grid[surr.left()[0]][surr.left()[1]].data = 2
@@ -807,6 +848,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(4)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "u":
                             surr.data = 2
                             grid[surr.left()[0]][surr.left()[1]].data = 1
@@ -814,6 +856,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(4)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "v":
                             surr.data = 2
                             grid[surr.left()[0]][surr.left()[1]].data = 2
@@ -821,6 +864,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(4)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "6":
                             surr.data = 3
                             grid[surr.left()[0]][surr.left()[1]].data = 1
@@ -828,6 +872,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(4)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "7":
                             surr.data = 3
                             grid[surr.left()[0]][surr.left()[1]].data = 2
@@ -835,7 +880,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(4)
                             steps.append("u")
-
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.left()[0], surr.left()[1]), grid, steps)
 
@@ -846,7 +891,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.left()[0]][surr.left()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -864,6 +909,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(5)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -876,6 +922,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("d")
                 steps.append(5)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -888,6 +935,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(5)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -900,6 +948,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("u")
                 steps.append(5)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -912,6 +961,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(5)
                 steps.append("d")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -924,6 +974,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 steps.append("n")
                 steps.append(5)
                 steps.append("u")
+                steps.append("#")
                 succ, new_steps = calculate(letters[1:], (second.row, second.col), grid, steps)
                 if succ:
                     return True, new_steps
@@ -955,6 +1006,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(5)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "l":
                             surr.data = 1
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 2
@@ -962,6 +1014,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("d")
                             steps.append(5)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "w":
                             surr.data = 2
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 1
@@ -969,6 +1022,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(5)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "x":
                             surr.data = 2
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 2
@@ -976,6 +1030,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("u")
                             steps.append(5)
                             steps.append("u")
+                            steps.append("#")
                         if letter == "8":
                             surr.data = 3
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 1
@@ -983,6 +1038,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(5)
                             steps.append("d")
+                            steps.append("#")
                         if letter == "9":
                             surr.data = 3
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 2
@@ -990,7 +1046,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             steps.append("n")
                             steps.append(5)
                             steps.append("u")
-
+                            steps.append("#")
 
                         succ, new_steps = calculate(letters[1:], (surr.up_left()[0], surr.up_left()[1]), grid, steps)
 
@@ -1001,7 +1057,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                             # reset the parts of the grid we changed
                             surr.data = 0
                             grid[surr.up_left()[0]][surr.up_left()[1]].data = 0
-                            for b in range(4):
+                            for b in range(5):
                                 steps.pop()
                 # If succ is still false, then none of the surroundings were valid
                 if not succ:
@@ -1010,7 +1066,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
                 return False, steps
 
     if letter == " ":
-        steps.append("#")
+        steps.append(".")
         succ, new_steps = calculate(letters[1:], (current[0], current[1]), grid, steps)
         if succ:
             return True, new_steps
@@ -1018,7 +1074,7 @@ def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
             return False, steps
 
 
-def draw(grid :[], steps :[], size :int):
+def draw(grid: [], steps: [], size: int):
     center = size // 2
     left = center
     right = center
@@ -1036,54 +1092,389 @@ def draw(grid :[], steps :[], size :int):
                     left = hex.col
                 if hex.col > right:
                     right = hex.col
-    print("up: " + str(up) + " down: " + str(down) + " left: " + str(left) + " right: " + str(right))
     horiz = down - up + 2
     vert = right - left + 2
     if horiz > vert:
-        side_length = 600 // horiz
+        side_length = 650 // (horiz * 1.5)
     else:
-        side_length = 600 // vert
-    print("side_length: " + str(side_length))
+        side_length = 650 // (vert * 1.5)
 
-    if center - up >= down - center and center - up >= center - left and center - up >= right - center:
-        shift = 1
-    elif right - center >= center - up and right - center >= center - left and right - center >= down - center:
-        shift = 2
-    elif down - center >= center - up and down - center >= center - left and down - center >= right - center:
-        shift = 3
-    else:
-        shift = 4
-
-    print(shift)
     turtle.up()
-    if shift == 1:
-        turtle.right(90)
-        for i in range((center - up) // 2):
-            turtle.forward(side_length)
-        turtle.left(90)
-    if shift == 2:
-        turtle.left(180)
-        for i in range((right - center) // 2):
-            turtle.forward(side_length)
-        turtle.right(180)
-    if shift == 3:
-        turtle.left(90)
-        for i in range((down - center) // 2):
-            turtle.forward()
-        turtle.right(90)
-    if shift == 4:
-        for i in range((center - up) // 2):
-            turtle.forward()
+    turtle.speed(2)
+
+    # Adjust for being too high
+    turtle.right(90)
+    for i in range((center - up)):
+        turtle.forward(side_length)
+    turtle.left(90)
+
+    # Adjust for being too far right
+    turtle.left(180)
+    for i in range((right - center)):
+        turtle.forward(side_length)
+    turtle.right(180)
+
+    # low
+    turtle.left(90)
+    for i in range((down - center)):
+        turtle.forward(side_length)
+    turtle.right(90)
+
+    # left
+    for i in range((center - left)):
+        turtle.forward(side_length)
+
     turtle.down()
-    turtle.left(60)
-    draw_down(side_length)
+    turtle.setheading(30)
+    for place in range(len(steps)):
+
+        if place == 0 or steps[place] == ".":
+            # place += 1
+            if steps[place] == "d":
+                draw_down(side_length)
+            elif steps[place] == "u":
+                draw_up(side_length)
+            elif steps[place] == "n":
+                draw_empty(side_length)
+            if steps[place + 1] == 0:
+                draw_dot(0, side_length)
+            if steps[place + 1] == 1:
+                draw_dot(1, side_length)
+            if steps[place + 1] == 2:
+                draw_dot(2, side_length)
+            if steps[place + 1] == 3:
+                draw_dot(3, side_length)
+            if steps[place + 1] == 4:
+                draw_dot(4, side_length)
+            if steps[place + 1] == 5:
+                draw_dot(5, side_length)
+
+        else:
+            if steps[place] == "d":
+                draw_down(side_length)
+            elif steps[place] == "u":
+                draw_up(side_length)
+            elif steps[place] == "n":
+                draw_empty(side_length)
+            elif steps[place] == 0:
+                move_to(0, side_length)
+            elif steps[place] == 1:
+                move_to(1, side_length)
+            elif steps[place] == 2:
+                move_to(2, side_length)
+            elif steps[place] == 3:
+                move_to(3, side_length)
+            elif steps[place] == 4:
+                move_to(4, side_length)
+            elif steps[place] == 5:
+                move_to(5, side_length)
+            elif steps[place] == "#":
+                if steps[place - 1] == "d" and steps[place + 1] == 0:
+                    shade(1, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 0:
+                    shade(4, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 1:
+                    shade(2, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 1:
+                    shade(4, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 2:
+                    shade(2, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 2:
+                    shade(5, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 3:
+                    shade(3, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 3:
+                    shade(5, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 4:
+                    shade(3, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 4:
+                    shade(6, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 5:
+                    shade(1, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 5:
+                    shade(6, side_length)
+
     turtle.mainloop()
 
 
-def draw_down(len :int):
+def draw_down(length: int):
+    """
+    :param length: side length
+    """
     for i in range(6):
-        turtle.forward(len)
+        turtle.forward(length)
         turtle.right(60)
+    turtle.right(60)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.left(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(120)
+
+
+def draw_up(length: int):
+    for i in range(6):
+        turtle.forward(length)
+        turtle.right(60)
+    turtle.right(120)
+    turtle.forward(length)
+    turtle.left(120)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.left(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(120)
+    turtle.forward(length)
+    turtle.right(60)
+
+
+def draw_empty(length: int):
+    for i in range(6):
+        turtle.forward(length)
+        turtle.right(60)
+
+
+def move_to(side: int, length: int):
+    turtle.up()
+    if side == 0:
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.right(60)
+    if side == 1:
+        for i in range(2):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.left(120)
+    if side == 2:
+        for i in range(4):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.right(120)
+    if side == 3:
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.left(180)
+    if side == 4:
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.right(180)
+    if side == 5:
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(60)
+    turtle.down()
+
+
+def shade(region: int, length: int):
+    # 1 is top, 2 is right, 3 is left, 4 is up right, 5 is bottom, 6 is up left
+    turtle.begin_fill()
+    if region == 1:
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.right(180)
+    if region == 2:
+        for i in range(2):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.left(60)
+        turtle.forward(length)
+        for j in range(2):
+            turtle.left(60)
+            turtle.forward(length)
+        turtle.left(180)
+    if region == 3:
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(60)
+    if region == 4:
+        for i in range(2):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.forward(length)
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.left(180)
+
+    if region == 5:
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.left(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(60)
+    if region == 6:
+        turtle.forward(length)
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length)
+        turtle.right(120)
+        turtle.forward(length)
+        turtle.right(60)
+    turtle.end_fill()
+
+
+def draw_dot(region: int, length: int):
+    if region == 0:
+        turtle.forward(length)
+        turtle.right(60)
+        turtle.forward(length / 2)
+        turtle.right(120)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.left(120)
+        turtle.forward(length / 2)
+        turtle.left(60)
+        turtle.forward(length)
+        turtle.right(180)
+    if region == 1:
+        for i in range(2):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.forward(length / 2)
+        turtle.right(60)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.left(60)
+        turtle.forward(length / 2)
+        turtle.left(60)
+        for i in range(2):
+            turtle.forward(length)
+            turtle.left(60)
+        turtle.left(120)
+    if region == 2:
+        for i in range(3):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.forward(length / 2)
+        turtle.right(120)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.left(120)
+        turtle.forward(length / 2)
+        turtle.left(60)
+        for i in range(3):
+            turtle.forward(length)
+            turtle.left(60)
+        turtle.left(120)
+    if region == 3:
+        for i in range(4):
+            turtle.forward(length)
+            turtle.right(60)
+        turtle.forward(length / 2)
+        turtle.right(60)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.left(60)
+        turtle.forward(length / 2)
+        turtle.left(60)
+        for i in range(4):
+            turtle.forward(length)
+            turtle.left(60)
+        turtle.left(120)
+    if region == 4:
+        turtle.right(120)
+        turtle.forward(length / 2)
+        turtle.left(60)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.right(60)
+        turtle.forward(length / 2)
+        turtle.right(60)
+    if region == 5:
+        turtle.forward(length / 2)
+        turtle.right(60)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.dot(length / 8)
+        turtle.right(180)
+        turtle.up()
+        turtle.forward(length / 4)
+        turtle.down()
+        turtle.left(60)
+        turtle.forward(length / 2)
+        turtle.right(180)
 
 
 if __name__ == "__main__":
