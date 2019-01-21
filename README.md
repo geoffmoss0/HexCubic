@@ -1,0 +1,1 @@
+This is a program that can graphically display the cypher HexCubic (TM) cypyer made by Matthew Bonney (https://github.com/mjb4611). It uses backtracking to find a viable path or prints that it cannot find a path if it does not exist. See https://github.com/mjb4611/Hexcubic to learn more about the HexCubic cypher.
