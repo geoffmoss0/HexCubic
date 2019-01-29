@@ -1096,13 +1096,14 @@ def draw(grid: [], steps: [], size: int):
     horiz = down - up + 2
     vert = right - left + 2
     if horiz > vert:
-        side_length = 650 // (horiz * 2)
+        side_length = 700 // (horiz * 2)
     else:
-        side_length = 650 // (vert * 2)
+        side_length = 700 // (vert * 2)
 
     turtle.up()
     turtle.speed(0)
-    turtle.tracer(False)
+    # turtle.tracer(False)
+    turtle.hideturtle()
 
     # Adjust for being too high
     turtle.right(90)
