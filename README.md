@@ -36,4 +36,4 @@ The Hex class is a wrapper class for the coordinates of a point and can calculat
 The drawing is created using turtle based on the instructions in the steps array. It draws the hexagons in the order they appear in the word
 Turtle is used because when hidden it creates the effect of actually being drawn, instead of simply being rendered. 
 The size of the drawing is determined based on the distance from the center point of the graph and side length of the hexagons is based on the 700 x 700 window
-The distance the drawing strays from the center in the four cardinal directions is calculated and accounted for my moving the turtle opposite of the direction the drawing strays from the center
+The distance the drawing strays from the center in the four cardinal directions is calculated and accounted for by moving the turtle opposite of the direction the drawing strays from the center
