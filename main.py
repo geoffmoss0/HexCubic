@@ -5,8 +5,18 @@ from hex import Hex
 def main():
 
     while True:
+        print("Type DRAW to draw a hexcubic image, CLEAR to clear the frame, or EXIT to exit ")
         data = input()
-        graph(data.lower())
+        if data == "DRAW":
+            word = input("Enter string to print: ")
+            graph(word.lower())
+        elif data == "CLEAR":
+            clear()
+        elif data == "EXIT":
+            exit(1)
+        else:
+            print("Did not understand command. Exiting...")
+            exit(1)
 
 
 def graph(data: str):
@@ -1100,12 +1110,14 @@ def draw(grid: [], steps: [], size: int):
     horiz = down - up + 2
     vert = right - left + 2
     if horiz > vert:
-        side_length = 700 // (horiz * 2)
+        side_length = 800 // (horiz * 2)
     else:
-        side_length = 700 // (vert * 2)
+        side_length = 800 // (vert * 2)
 
     turtle.up()
+    turtle.setposition((0, 0))
     turtle.speed(0)
+    turtle.color("black")
     # turtle.tracer(False)
     turtle.hideturtle()
 
@@ -1227,7 +1239,6 @@ def draw(grid: [], steps: [], size: int):
                 if steps[place - 1] == "d" and steps[place + 1] == 5:
                     shade(6, side_length)
         place += 1
-    turtle.mainloop()
 
 
 def draw_down(length: int):
@@ -1533,6 +1544,22 @@ def draw_dot(region: int, length: int):
         turtle.left(60)
         turtle.forward(length / 2)
         turtle.right(180)
+
+
+def clear():
+    turtle.speed(0)
+    turtle.up()
+    turtle.hideturtle()
+    turtle.setpos((-480, 405))
+    turtle.setheading(0)
+    turtle.color("white")
+    turtle.begin_fill()
+    for i in range(2):
+        turtle.forward(960)
+        turtle.right(90)
+        turtle.forward(810)
+        turtle.right(90)
+    turtle.end_fill()
 
 
 if __name__ == "__main__":
