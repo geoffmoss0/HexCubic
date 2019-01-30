@@ -1,8 +1,19 @@
 import turtle
+import sys
+import time
 from hex import Hex
 
 
 def main():
+
+    if len(sys.argv) == 2:
+        graph(sys.argv[1].lower())
+        print("Window will auto-close")
+        time.sleep(3)
+        exit(1)
+
+    elif len(sys.argv) > 2:
+        print("Usage: main.py input")
 
     while True:
         print("Type DRAW to draw a hexcubic image, CLEAR to clear the frame, or EXIT to exit ")
