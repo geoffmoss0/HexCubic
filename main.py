@@ -10,7 +10,11 @@ def main():
 
 
 def graph(data: str):
-
+    """
+    Sets up the initial parameters for calcualte, calls the calculate method, and reacts to the output
+     drawing if it succeeds and printing that no solution exists if it fails
+    :param data: the string input
+    """
     count = 0
     for letter in data:
         if not letter == " ":
@@ -33,7 +37,7 @@ def graph(data: str):
 
 def calculate(letters: str, current: (), grid: [], steps: []) -> (bool, []):
     """
-
+    This is the main recursive method that changes grid and steps and backtracks if no solutions are found
     :param letters: the letters left to calculate
     :param current: the current position on the grid
     :param grid: the arrays representing the hex grid
@@ -1131,6 +1135,7 @@ def draw(grid: [], steps: [], size: int):
     turtle.setheading(30)
     for place in range(len(steps)):
 
+        # If we're at the start of the array there should always be a dot, also if it's a new word we need a dot
         if place == 0 or steps[place] == ".":
             # place += 1
             if steps[place] == "d":
@@ -1172,6 +1177,9 @@ def draw(grid: [], steps: [], size: int):
             elif steps[place] == 5:
                 move_to(5, side_length)
             elif steps[place] == "#":
+                # Drawing the shaded region depends on the facing of the hex,
+                # up and down will be different and need different regions drawn.
+                # Empty hexes are never drawn second and will never be shaded
                 if steps[place - 1] == "d" and steps[place + 1] == 0:
                     shade(1, side_length)
                 if steps[place - 1] == "u" and steps[place + 1] == 0:
@@ -1202,6 +1210,7 @@ def draw(grid: [], steps: [], size: int):
 
 def draw_down(length: int):
     """
+    Draw a downward facing hexagon
     :param length: side length
     """
     for i in range(6):
@@ -1223,6 +1232,10 @@ def draw_down(length: int):
 
 
 def draw_up(length: int):
+    """
+    Draw an upward facing hex
+    :param length: side length
+    """
     for i in range(6):
         turtle.forward(length)
         turtle.right(60)
@@ -1246,12 +1259,21 @@ def draw_up(length: int):
 
 
 def draw_empty(length: int):
+    """
+    Draw an empty hex
+    :param length: side length
+    """
     for i in range(6):
         turtle.forward(length)
         turtle.right(60)
 
 
 def move_to(side: int, length: int):
+    """
+    Move the turtle to where the upper left corner in the next hex will be
+    :param side: side of the current hex to move to
+    :param length: side length
+    """
     turtle.up()
     if side == 0:
         turtle.forward(length)
@@ -1290,6 +1312,11 @@ def move_to(side: int, length: int):
 
 
 def shade(region: int, length: int):
+    """
+    Shade the correct region of the hex. There are 6 in total, 3 for up and 3 for down
+    :param region: region to draw based on the comment below
+    :param length: side length
+    """
     # 1 is top, 2 is right, 3 is left, 4 is up right, 5 is bottom, 6 is up left
     turtle.begin_fill()
     if region == 1:
@@ -1368,6 +1395,11 @@ def shade(region: int, length: int):
 
 
 def draw_dot(region: int, length: int):
+    """
+    Place a dot on the correct side of the hex
+    :param region: edge of the hexagon to draw the dot on
+    :param length: side length
+    """
     if region == 0:
         turtle.forward(length)
         turtle.right(60)
