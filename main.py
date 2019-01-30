@@ -1180,29 +1180,29 @@ def draw(grid: [], steps: [], size: int):
                 # Drawing the shaded region depends on the facing of the hex,
                 # up and down will be different and need different regions drawn.
                 # Empty hexes are never drawn second and will never be shaded
-                if steps[place - 1] == "d" and steps[place + 1] == 0:
-                    shade(1, side_length)
                 if steps[place - 1] == "u" and steps[place + 1] == 0:
-                    shade(4, side_length)
-                if steps[place - 1] == "d" and steps[place + 1] == 1:
-                    shade(2, side_length)
-                if steps[place - 1] == "u" and steps[place + 1] == 1:
-                    shade(4, side_length)
-                if steps[place - 1] == "d" and steps[place + 1] == 2:
-                    shade(2, side_length)
-                if steps[place - 1] == "u" and steps[place + 1] == 2:
-                    shade(5, side_length)
-                if steps[place - 1] == "d" and steps[place + 1] == 3:
-                    shade(3, side_length)
-                if steps[place - 1] == "u" and steps[place + 1] == 3:
-                    shade(5, side_length)
-                if steps[place - 1] == "d" and steps[place + 1] == 4:
-                    shade(3, side_length)
-                if steps[place - 1] == "u" and steps[place + 1] == 4:
-                    shade(6, side_length)
-                if steps[place - 1] == "d" and steps[place + 1] == 5:
                     shade(1, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 0:
+                    shade(4, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 1:
+                    shade(2, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 1:
+                    shade(4, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 2:
+                    shade(2, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 2:
+                    shade(5, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 3:
+                    shade(3, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 3:
+                    shade(5, side_length)
+                if steps[place - 1] == "u" and steps[place + 1] == 4:
+                    shade(3, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 4:
+                    shade(6, side_length)
                 if steps[place - 1] == "u" and steps[place + 1] == 5:
+                    shade(1, side_length)
+                if steps[place - 1] == "d" and steps[place + 1] == 5:
                     shade(6, side_length)
 
     turtle.mainloop()
@@ -1211,29 +1211,6 @@ def draw(grid: [], steps: [], size: int):
 def draw_down(length: int):
     """
     Draw a downward facing hexagon
-    :param length: side length
-    """
-    for i in range(6):
-        turtle.forward(length)
-        turtle.right(60)
-    turtle.right(60)
-    turtle.forward(length)
-    turtle.left(60)
-    turtle.forward(length)
-    turtle.left(180)
-    turtle.forward(length)
-    turtle.left(60)
-    turtle.forward(length)
-    turtle.right(180)
-    turtle.forward(length)
-    turtle.left(60)
-    turtle.forward(length)
-    turtle.right(120)
-
-
-def draw_up(length: int):
-    """
-    Draw an upward facing hex
     :param length: side length
     """
     for i in range(6):
@@ -1256,6 +1233,30 @@ def draw_up(length: int):
     turtle.right(120)
     turtle.forward(length)
     turtle.right(60)
+
+
+def draw_up(length: int):
+    """
+    Draw an upward facing hex
+    :param length: side length
+    """
+    for i in range(6):
+        turtle.forward(length)
+        turtle.right(60)
+    turtle.right(60)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.left(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(180)
+    turtle.forward(length)
+    turtle.left(60)
+    turtle.forward(length)
+    turtle.right(120)
+
 
 
 def draw_empty(length: int):
