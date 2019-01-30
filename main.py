@@ -49,7 +49,6 @@ def graph(data: str):
     current = (size // 2, size // 2)
 
     succ, steps = calculate(data, current, grid, steps)
-    print(steps)
     if succ:
         draw(grid, steps, size)
     else:
