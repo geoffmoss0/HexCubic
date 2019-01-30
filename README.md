@@ -40,6 +40,7 @@ The distance the drawing strays from the center in the four cardinal directions 
 
 
 What I learned:
+
 I learned how to implement and use a hex grid using offset coordinates
 I learned how to use backtracking with recursion, implemented all the functionality independently. 
 My first year CS class mentioned the topic of backtracking but we were never tested on it and never implemented it, so in place of a lab I created this program to learn the topic
