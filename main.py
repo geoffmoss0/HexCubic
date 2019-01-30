@@ -1135,9 +1135,31 @@ def draw(grid: [], steps: [], size: int):
     turtle.setheading(30)
     for place in range(len(steps)):
 
-        # If we're at the start of the array there should always be a dot, also if it's a new word we need a dot
-        if place == 0 or steps[place] == ".":
+        # If we're at the start of the array the current hex needs a dot
+        if place == 0:
             # place += 1
+            if steps[place] == "d":
+                draw_down(side_length)
+            elif steps[place] == "u":
+                draw_up(side_length)
+            elif steps[place] == "n":
+                draw_empty(side_length)
+            if steps[place + 1] == 0:
+                draw_dot(0, side_length)
+            if steps[place + 1] == 1:
+                draw_dot(1, side_length)
+            if steps[place + 1] == 2:
+                draw_dot(2, side_length)
+            if steps[place + 1] == 3:
+                draw_dot(3, side_length)
+            if steps[place + 1] == 4:
+                draw_dot(4, side_length)
+            if steps[place + 1] == 5:
+                draw_dot(5, side_length)
+        elif steps[place] == ".":
+            place += 1
+            move_to(steps[place], side_length)
+            place += 1
             if steps[place] == "d":
                 draw_down(side_length)
             elif steps[place] == "u":
