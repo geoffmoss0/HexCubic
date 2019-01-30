@@ -1133,7 +1133,8 @@ def draw(grid: [], steps: [], size: int):
 
     turtle.down()
     turtle.setheading(30)
-    for place in range(len(steps)):
+    place = 0
+    while place < len(steps):
 
         # If we're at the start of the array the current hex needs a dot
         if place == 0:
@@ -1178,7 +1179,6 @@ def draw(grid: [], steps: [], size: int):
                 draw_dot(4, side_length)
             if steps[place + 1] == 5:
                 draw_dot(5, side_length)
-
         else:
             if steps[place] == "d":
                 draw_down(side_length)
@@ -1226,7 +1226,7 @@ def draw(grid: [], steps: [], size: int):
                     shade(1, side_length)
                 if steps[place - 1] == "d" and steps[place + 1] == 5:
                     shade(6, side_length)
-
+        place += 1
     turtle.mainloop()
 
 
