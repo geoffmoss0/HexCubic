@@ -1557,6 +1557,9 @@ def draw_dot(region: int, length: int):
 
 
 def clear():
+    """
+    Clears the screen. This should be run in between DRAW commands
+    """
     turtle.speed(0)
     turtle.up()
     turtle.hideturtle()
