@@ -1,17 +1,29 @@
 This is a program that can graphically display the Hexcubic (TM) cypher made by Matthew Bonney (https://github.com/mjb4611).
+
 See https://github.com/mjb4611/Hexcubic to learn more about the Hecubic cypher.
+
 
 The program takes a string of any length (strings over 30 characters may take a long to backtrack or may not work) and attempts to display it in the Hexcubic cypher. 
 It uses a hex grid with offset coordinates and an array of instructions for drawing to keep track of the current image. 
 The hex grid is initialized large enough to contain any possible configuration, so that a drawing that extended in any one of the six directions will not throw an error
+
+
 The steps array of instructions for drawing the picture uses the following key:
+
 	"d" - downward hex
+ 
 	"u" - upward hex
+
 	"n" - empty hex
+
 	1-6 - side of the hexagon to move to next, starting with the top right and moving around clockwise
+
 	"#" - signifies that the region touching the next hex drawn should be shaded
+
 	"." - signifies the end of a word and that a dot should be drawn on the side that the next hex will be drawn on
+
 	"*" - end of instructions
+
 
 The program uses a recursive backtracking algorithm to test all viable arrangements of the characters and returns false if no valid configurations exist.
 The backtracking algorithm constructs a tuple of the surrounding hexes, and ensures that at least one is not null before continuing.
